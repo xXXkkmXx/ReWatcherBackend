@@ -1,19 +1,28 @@
-const PORT = 3001
+require("dotenv").config();
+
+const PORT = process.env.PORT
 
 const express = require("express");
 const input = require("readline");
 const app = express();
 
-const mongo = require("./mongodb");
+const mongo = require("./middleware/mongodb");
 const User = require("./schemas/userSchema");
+
+mongo.Connect();
+
+const HelpLog = () => {
+    console.log(
+        "=========== h for help ============\n"+                    
+        "'a' for the adding testing user\n" +
+        "'d' for deleting him\n"+
+        "'q' for close quit a server"
+    );
+}
 
 const server = app.listen(PORT,()=>{
     console.log(`\x1b[32mServer is running on the port ${PORT}\x1b[00m`);
-    console.log("=========== h for help ============\n"+                    
-                "'a' for the adding testing user\n" +
-                "'d' for deleting him\n"+
-                "'q' for quit a server"
-            );
+    setTimeout(()=>{HelpLog()},500);
     process.stdin.resume();
 })
 
@@ -34,18 +43,38 @@ app.get("/api/login", (request,response)=>{
 app.post("/api/login", (request,response)=>{
 
 })
-app.post("/api/register", (request,response)=>{
+app.post("/api/register", async (request,response)=>{
     const name = "marcin";
     const password = "dfsjkxvncdhjgfdnjkgfnjkdgfnd";
     const email = "marcin@hotmail.com";
-    const tmp = new User({Name:name,Email:email,Password:password});
-    const isExist = false;
-    mongo.Close();
+    
+    const tmp = new User(
+        {
+            Name:name,
+            Email:email
+            ,Password:password
+        }
+    );
+
+    const isExist = await User.findOne({Email:email});    
+    
+    if(isExist){
+        return response.status(409).json({
+            message: "user is already using this email"
+        });
+    }
+
+    await tmp.save();
+    response.status(201).json({
+        message: "user created"
+    });
+
 })
 
 const ShutDownServer = () =>{
     server.close(()=>{
         console.log("server closed properly");
+        mongo.Close();
         process.exit(0);
     });
     setTimeout(() => {
@@ -64,6 +93,12 @@ const AddTestGuy = () => {
     })
 }
 
+const DeleteTestGuy = () =>{
+    User.findOneAndDelete({Email:"wojtasz@hotmail.com"}).then(()=>{
+        mongo.Close();
+    })
+}
+
 input.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 
@@ -72,17 +107,13 @@ process.stdin.on("keypress", (ch,key)=>{
         switch(key.name){
             case 'h':
                 console.clear();
-                console.log(
-                    "=========== h for help ============\n"+
-                    "'a' for the adding testing user\n" +
-                    "'d' for deleting him\n"+
-                    "'q' for quit a server"
-                );
+                HelpLog();
                 break;
             case 'a':
                 AddTestGuy();
                 break;
             case 'd':
+                DeleteTestGuy();
                 break;
             case 'q':
                 ShutDownServer();

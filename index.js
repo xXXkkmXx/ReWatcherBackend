@@ -4,10 +4,13 @@ const PORT = process.env.PORT
 
 const express = require("express");
 const input = require("readline");
+const bcrypt = require("bcrypt")
 const app = express();
 
 const mongo = require("./middleware/mongodb");
 const User = require("./schemas/userSchema");
+const registerRouter = require("./controllers/register");
+const loginRouter = require("./controllers/login");
 
 mongo.Connect();
 
@@ -32,44 +35,9 @@ const test = new User({
     Password:"uj8i9orfw3ewrujioaw4rf34rhjau8ji94rtui8904tweuji",
 });
 
-app.get("/", (request,response) =>{
-
-})
-
-app.get("/api/login", (request,response)=>{
-
-})
-
-app.post("/api/login", (request,response)=>{
-
-})
-app.post("/api/register", async (request,response)=>{
-    const name = "marcin";
-    const password = "dfsjkxvncdhjgfdnjkgfnjkdgfnd";
-    const email = "marcin@hotmail.com";
-    
-    const tmp = new User(
-        {
-            Name:name,
-            Email:email
-            ,Password:password
-        }
-    );
-
-    const isExist = await User.findOne({Email:email});    
-    
-    if(isExist){
-        return response.status(409).json({
-            message: "user is already using this email"
-        });
-    }
-
-    await tmp.save();
-    response.status(201).json({
-        message: "user created"
-    });
-
-})
+app.get("/", (request,response) =>{})
+app.use('api/login',loginRouter);
+app.use("api/register",registerRouter);
 
 const ShutDownServer = () =>{
     server.close(()=>{

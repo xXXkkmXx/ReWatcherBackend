@@ -3,10 +3,10 @@ const bcrypt = require("bcrypt");
 
 const User = require("../schemas/userSchema");
 
-registerRouter.post("/api/register", async (request,response)=>{
+registerRouter.post("/", async (request,response)=>{
     const {name,email,password} = request.body;
     const saltRounds = 10;
-    const hashedPswd = bcrypt.hash(password,saltRounds);
+    const hashedPswd = await bcrypt.hash(password,saltRounds);
 
     const tmp = new User(
         {
@@ -26,8 +26,9 @@ registerRouter.post("/api/register", async (request,response)=>{
 
     await tmp.save();
     response.status(201).json({
-        message: "user created"
-    });
+        message: "user created",
+        user: tmp
+    }).then();
 
 })
 

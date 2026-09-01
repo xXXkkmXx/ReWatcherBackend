@@ -9,6 +9,7 @@ const cors = require("cors");
 const app = express();
 
 const mongo = require("./middleware/mongodb");
+const emailSender = require("./middleware/emailsender");
 const User = require("./schemas/userSchema");
 const registerRouter = require("./controllers/register");
 const loginRouter = require("./controllers/login");
@@ -18,7 +19,8 @@ mongo.Connect();
 const HelpLog = () => {
     console.log(
         "=========== h for help ============\n"+                    
-        "'q' for close quit a server"
+        "'q' for close quit a server",
+        "\n's' for send template email"
     );
 }
 
@@ -58,6 +60,9 @@ process.stdin.on("keypress", (ch,key)=>{
             case 'h':
                 console.clear();
                 HelpLog();
+                break;
+            case 'b':
+                emailSender.sendMail("Hello my friend","jamax382@gmail.com","djksadjksajda",emailSender.mailFormula("max kow",3288382890));
                 break;
             case 'q':
                 ShutDownServer();

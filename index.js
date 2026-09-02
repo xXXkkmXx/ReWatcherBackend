@@ -8,11 +8,14 @@ const bcrypt = require("bcrypt");
 const cors = require("cors");
 const app = express();
 
-const mongo = require("./middleware/mongodb");
-const emailSender = require("./middleware/emailsender");
+const mongo = require("./utils/mongodb");
+const emailSender = require("./utils/emailsender");
 const User = require("./schemas/userSchema");
 const registerRouter = require("./controllers/register");
 const loginRouter = require("./controllers/login");
+const verifyRouter = require("./controllers/verify");
+const changeSenderRouter = require("./controllers/changesender");
+const changePswdRouter = require("./controllers/changepswd");
 
 mongo.Connect();
 
@@ -20,7 +23,7 @@ const HelpLog = () => {
     console.log(
         "=========== h for help ============\n"+                    
         "'q' for close quit a server",
-        "\n's' for send template email"
+        "\n'b' for send template email"
     );
 }
 
@@ -28,6 +31,9 @@ app.use(express.json());
 app.use(cors());
 app.use('/api/login',loginRouter);
 app.use("/api/register",registerRouter);
+app.use("/api/verify/",verifyRouter);
+app.use("/api/changesender",changeSenderRouter);
+app.use("/api/changepassword/",changePswdRouter);
 
 const server = app.listen(PORT,()=>{
     console.log(`\x1b[32mServer is running on the port ${PORT}\x1b[00m`);
@@ -62,7 +68,7 @@ process.stdin.on("keypress", (ch,key)=>{
                 HelpLog();
                 break;
             case 'b':
-                emailSender.sendMail("Hello my friend","jamax382@gmail.com","djksadjksajda",emailSender.mailFormula("max kow",3288382890));
+                emailSender.sendMail("Hello my friend","maxkowalczyk1111@gmail.com","djksadjksajda",emailSender.mailFormula("max kow",3288382890));
                 break;
             case 'q':
                 ShutDownServer();

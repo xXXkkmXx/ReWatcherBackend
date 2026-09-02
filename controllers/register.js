@@ -2,7 +2,7 @@ const registerRouter = require("express").Router();
 const bcrypt = require("bcrypt");
 
 const User = require("../schemas/userSchema");
-const EmailSender = require("../middleware/emailsender");
+const EmailSender = require("../utils/emailsender");
 
 registerRouter.post("/", async (request,response)=>{
     const {name,email,password} = request.body;
@@ -30,7 +30,7 @@ registerRouter.post("/", async (request,response)=>{
     response.status(201).json({
         message: "user created",
         user: tmp
-    }).then(EmailSender.sendMail(`Hello mr/mr.s ${tmp.Name} your ID is ${tmp.id}`,tmp.Email,"test"));
+    }).then(EmailSender.sendMail(tmp.Email,"Verification",EmailSender.mailFormulaVer(tmp.Name,tmp.ID)));
 
 })
 

@@ -11,13 +11,19 @@ loginRouter.post("/", async (request,response)=>{
     const correctPassword = user == null 
         ? false 
         : await bcrypt.compare(password,user.Password);
-    
+
     if(!(user && correctPassword)){
         return response.status(401).json({
             error: "Invalid username or password"
         })
     }
-    
+
+    if(!user.IsVerified){
+        return response.status(500).json({
+            error: "Account isn't verified"
+        })
+    }
+
     const userTokenLog = {
         username: user.name,
         id: user._id

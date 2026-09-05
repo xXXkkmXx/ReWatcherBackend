@@ -5,10 +5,12 @@ const User = require("../schemas/userSchema");
 
 verifyRouter.put("/:id",async (request,response,next)=>{
     const { password } = request.body;
-    const user = User.findById(request.param.id);
+    const user = await User.findById(request.params.id);
 
-    if(await bcrypt.compare(user.Password,password)){
-        user.isVerified = true;
+    const correctPassword = user == null ? false : await bcrypt.compare(password,user.Password);
+
+    if(correctPassword){
+        user.IsVerified = true;
     }else{
         return response.status(401).json({
             error: "Wrong password"
@@ -16,7 +18,7 @@ verifyRouter.put("/:id",async (request,response,next)=>{
     }
 
     return user.save().then(()=>{
-        response.status(202)
+        response.sendStatus(202);
     });
 })
 

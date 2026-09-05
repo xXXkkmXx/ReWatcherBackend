@@ -10,7 +10,7 @@ changePswdRouter.put("/:id", async (request,response,next)=>{
     User.findById(request.param.id).then(
         async user=>{
             user.Password = await bcrypt.hash(password,saltRounds);
-            return user.save.then(()=>{response.status(202)})
+            return user.save.then(()=>{response.sendStatus(202)})
         } 
     ).catch(error => next(error));
 

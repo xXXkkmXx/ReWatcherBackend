@@ -22,15 +22,15 @@ registerRouter.post("/", async (request,response)=>{
     
     if(isExist){
         return response.status(409).json({
-            message: "user is already using this email"
+            message: "user is already using this email or name"
         });
     }
 
     await tmp.save();
-    response.status(201).json({
-        message: "user created",
-        user: tmp
-    }).then(EmailSender.sendMail(tmp.Email,"Verification",EmailSender.mailFormulaVer(tmp.Name,tmp.ID)));
+    EmailSender.sendMail(tmp.Email,"Verification",EmailSender.mailFormulaVer(tmp.Name,tmp.id))
+    return response.status(201).json({
+        message: "user created"         
+    })
 
 })
 

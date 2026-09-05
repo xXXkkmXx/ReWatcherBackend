@@ -23,12 +23,12 @@ const HelpLog = () => {
     console.log(
         "=========== h for help ============\n"+                    
         "'q' for close quit a server",
-        "\n'b' for send template email"
     );
 }
 
 app.use(express.json());
 app.use(cors());
+app.use(express.static('dist'));
 app.use('/api/login',loginRouter);
 app.use("/api/register",registerRouter);
 app.use("/api/verify/",verifyRouter);
@@ -66,9 +66,6 @@ process.stdin.on("keypress", (ch,key)=>{
             case 'h':
                 console.clear();
                 HelpLog();
-                break;
-            case 'b':
-                emailSender.sendMail("Hello my friend","maxkowalczyk1111@gmail.com","djksadjksajda",emailSender.mailFormula("max kow",3288382890));
                 break;
             case 'q':
                 ShutDownServer();

@@ -1,0 +1,6 @@
+PUT http://localhost:3001/api/verify/6a9bd4eb1d95b26198fd2cdf
+Content-Type: application/json
+
+{
+    "password": "aha"
+}

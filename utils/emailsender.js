@@ -35,7 +35,7 @@ const mailFormulaVer = (User,ID) =>{
     font-family:'Montenegrin Gothic One',serif">
     <p><strong style="font-size:7vw">Hello ${User}</strong></p>
     <p style="font-size:2.5vw">Here's verification for your account</p>
-    <a href="re-watcher.com/verify/${ID}}"><button style="background-color:#D2D2FA;
+    <a href="https://re-watcher.com/verify/${ID}"><button style="background-color:#D2D2FA;
                     border:none;
                     width:16vw;
                     height:7vh;
@@ -61,7 +61,7 @@ const mailFormulaChange = (User,ID) =>{
     font-family:'Montenegrin Gothic One',serif">
     <p><strong style="font-size:7vw">Hello ${User}</strong></p>
     <p style="font-size:2.5vw">Click this button for the change password</p>
-    <a href="re-watcher.com/changepassword/${ID}}"><button style="background-color:#D2D2FA;
+    <a href="https://re-watcher.com/changepassword/${ID}"><button style="background-color:#D2D2FA;
                     border:none;
                     width:16vw;
                     height:7vh;

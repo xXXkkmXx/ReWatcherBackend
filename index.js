@@ -30,7 +30,5 @@ app.use("/api/changepassword/",changePswdRouter);
 
 const server = app.listen(PORT,()=>{
     console.log(`\x1b[32mServer is running on the port ${PORT}\x1b[00m`);
-    setTimeout(()=>{HelpLog()},500);
-    process.stdin.resume();
 })
 

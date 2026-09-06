@@ -19,13 +19,6 @@ const changePswdRouter = require("./controllers/changepswd");
 
 mongo.Connect();
 
-const HelpLog = () => {
-    console.log(
-        "=========== h for help ============\n"+                    
-        "'q' for close quit a server",
-    );
-}
-
 app.use(express.json());
 app.use(cors());
 app.use(express.static('dist'));
@@ -41,36 +34,3 @@ const server = app.listen(PORT,()=>{
     process.stdin.resume();
 })
 
-const ShutDownServer = () =>{
-    server.close(()=>{
-        console.log("server closed properly");
-        mongo.Close();
-        process.exit(0);
-    });
-    setTimeout(() => {
-        console.error("\x1b[31mForcing server to shutdown after timeout");
-        if(server.closeAllConnections){
-            server.closeAllConnections();
-        }
-        process.exit(1);
-    },5000)
-
-}
-
-input.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
-
-process.stdin.on("keypress", (ch,key)=>{
-    if(key){
-        switch(key.name){
-            case 'h':
-                console.clear();
-                HelpLog();
-                break;
-            case 'q':
-                ShutDownServer();
-                break;
-        }
-    }
-    
-})

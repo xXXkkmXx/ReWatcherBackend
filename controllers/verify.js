@@ -1,4 +1,5 @@
 const verifyRouter = require("express").Router();
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const User = require("../schemas/userSchema");
@@ -16,9 +17,20 @@ verifyRouter.put("/:id",async (request,response,next)=>{
             error: "Wrong password"
         });
     }
+    
+    const token = jwt.sign(
+            userTokenLog,
+            process.env.SECRET,
+            {expiresIn: 60*60}
+    );
+    
 
     return user.save().then(()=>{
-        response.sendStatus(202);
+        response.sendStatus(202).send({
+            username:user.Name,
+            password:user.Password,
+            token:token
+        });
     });
 })
 

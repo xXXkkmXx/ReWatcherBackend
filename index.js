@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname,"dist")));
 
-const indexPath = path.resolve(__dirname,'dist','index.html');
+const indexPath = path.join(__dirname,'dist','index.html');
 app.get("/calendar",(request,respond)=>{
     respond.sendFile(indexPath)
 })

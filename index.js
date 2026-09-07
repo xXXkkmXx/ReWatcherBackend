@@ -2,6 +2,8 @@ require("dotenv").config();
 
 const PORT = process.env.PORT
 
+const path = require("path");
+
 const express = require("express");
 const input = require("readline");
 const bcrypt = require("bcrypt");
@@ -22,6 +24,27 @@ mongo.Connect();
 app.use(express.json());
 app.use(cors());
 app.use(express.static('dist'));
+
+const indexPath = path.resolve(__dirname,'dist','index.html');
+app.get("/calendar",(request,respond)=>{
+    respond.sendFile(indexPath)
+})
+app.get("/login",(request,respond)=>{
+    respond.sendFile(indexPath)
+})
+app.get("/register",(request,respond)=>{
+    respond.sendFile(indexPath)
+})
+app.get("/changepswdsender",(request,respond)=>{
+    respond.sendFile(indexPath)
+})
+app.get("/verification/:id",(request,respond)=>{
+    respond.sendFile(indexPath)
+})
+app.get("/changepassword/:id",(request,respond)=>{
+    respond.sendFile(indexPath)
+})
+
 app.use('/api/login',loginRouter);
 app.use("/api/register",registerRouter);
 app.use("/api/verify/",verifyRouter);

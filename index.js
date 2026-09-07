@@ -51,6 +51,10 @@ app.use("/api/verify/",verifyRouter);
 app.use("/api/changesender",changeSenderRouter);
 app.use("/api/changepassword/",changePswdRouter);
 
+app.use((request,respond,next)=>{
+    respond.sendFile(indexPath);
+})
+
 const server = app.listen(PORT,()=>{
     console.log(`\x1b[32mServer is running on the port ${PORT}\x1b[00m`);
 })

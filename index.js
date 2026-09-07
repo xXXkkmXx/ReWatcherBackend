@@ -23,7 +23,7 @@ mongo.Connect();
 
 app.use(express.json());
 app.use(cors());
-app.use(express.static('dist'));
+app.use(express.static(path.join(__dirname,"dist")));
 
 const indexPath = path.resolve(__dirname,'dist','index.html');
 app.get("/calendar",(request,respond)=>{

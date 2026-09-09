@@ -14,10 +14,16 @@ verifyRouter.put("/:id",async (request,response,next)=>{
         user.IsVerified = true;
     }else{
         return response.status(401).json({
-            error: "Wrong password"
+            error: "Wrong password",
+            message: password
         });
     }
     
+    const userTokenLog = {
+        username: user.name,
+        id: user._id
+    }
+
     const token = jwt.sign(
             userTokenLog,
             process.env.SECRET,
@@ -26,7 +32,7 @@ verifyRouter.put("/:id",async (request,response,next)=>{
     
 
     return user.save().then(()=>{
-        response.sendStatus(202).send({
+        response.status(202).send({
             username:user.Name,
             password:user.Password,
             token:token

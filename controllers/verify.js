@@ -14,8 +14,7 @@ verifyRouter.put("/:id",async (request,response,next)=>{
         user.IsVerified = true;
     }else{
         return response.status(401).json({
-            error: "Wrong password",
-            message: password
+            error: "Wrong password"
         });
     }
     

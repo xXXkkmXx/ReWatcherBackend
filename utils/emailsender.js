@@ -70,7 +70,7 @@ const mailFormulaChange = (User,ID) =>{
                     color:#141414;
                     margin-bottom:1vh;
                     cursor: pointer">
-        Verify
+        Change
     </button></a>
     </body>
     </html>`;
